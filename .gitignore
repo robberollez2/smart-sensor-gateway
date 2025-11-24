@@ -1,0 +1,42 @@
+# -------------------------
+# ENVIRONMENT & SECRETS
+# -------------------------
+.env
+*.key
+*.pem
+
+# -------------------------
+# DOCKER VOLUMES / RUNTIME DATA
+# -------------------------
+influxdb/data/
+influxdb/config/
+portainer_data/
+
+# Node-RED runtime data
+nodered/data/flows_cred.json
+nodered/data/*.backup
+nodered/data/.config.runtime.json
+
+# If the user installs extra palettes during runtime:
+nodered/data/node_modules/
+
+# Mosquitto generated data (if any)
+mosquitto/data/
+mosquitto/log/
+
+# -------------------------
+# PYTHON CACHE
+# -------------------------
+__pycache__/
+*.pyc
+
+# -------------------------
+# OS / EDITOR FILES
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# LOG FILES
+# -------------------------
+*.log

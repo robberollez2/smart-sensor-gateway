@@ -1,0 +1,81 @@
+version: "3.8"
+
+services:
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - gateway-net
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
+    volumes:
+      - ./influxdb/data:/var/lib/influxdb2
+      - ./influxdb/config:/etc/influxdb2
+      # init scripts + dashboard template
+      - ./influxdb/init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./influxdb/sensor_gateway.json:/docker-entrypoint-initdb.d/sensor_gateway.json
+    networks:
+      - gateway-net
+
+  nodered:
+    build: ./nodered
+    container_name: nodered
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    depends_on:
+      - mqtt
+      - influxdb
+    environment:
+      - TZ=Europe/Brussels
+      # naar Influx toe
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+    volumes:
+      - ./nodered/data:/data
+    networks:
+      - gateway-net
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer_data:/data
+    networks:
+      - gateway-net
+
+  sensor-sim:
+    build: ./sensor-sim
+    container_name: sensor-sim
+    restart: unless-stopped
+    depends_on:
+      - mqtt
+    networks:
+      - gateway-net
+
+networks:
+  gateway-net:
+    driver: bridge
