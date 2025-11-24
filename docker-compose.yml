@@ -27,7 +27,7 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUXDB_TOKEN}
     volumes:
       - ./influxdb/data:/var/lib/influxdb2
-      - ./influxdb/config:/etc/influxdb2
+      # - ./influxdb/config:/etc/influxdb2
       # init scripts + dashboard template
       - ./influxdb/init.sh:/docker-entrypoint-initdb.d/init.sh
       - ./influxdb/sensor_gateway.json:/docker-entrypoint-initdb.d/sensor_gateway.json
