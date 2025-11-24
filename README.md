@@ -1,4 +1,4 @@
-## 🚀 Installatie
+## Installatie
 
 ### 1. Vereisten
 
@@ -54,7 +54,7 @@ InfluxDB logt automatisch in met de credentials uit `.env`.
 
 ---
 
-## 🛠️ Troubleshooting
+## Troubleshooting
 
 ### ❗ Node-RED fout: "unauthorized access"
 
