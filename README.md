@@ -13,19 +13,39 @@ git clone https://github.com/<jouw-repo>/smart-sensor-gateway.git
 cd smart-sensor-gateway
 ```
 
-### 3. `.env` controleren
+### 3. `.env` verkrijgen en controleren
 
-De meegeleverde `.env` bevat o.a.:
+Het benodigde `.env`-bestand is verkrijgbaar bij **R. Rollez**.
+
+De meegeleverde/verkregen `.env` bevat o.a.:
 
 - InfluxDB gebruikersnaam
 - InfluxDB wachtwoord
 - Organisatienaam
 - Bucketnaam
-- Admin token
+- Admin token (wordt ook gebruikt in Node-RED)
 
 > ⚠️ **Belangrijk:** wijzig deze waarden niet, tenzij je bewust de volledige database opnieuw wilt initialiseren.
 
-### 4. Stack opstarten
+### 4. Node-RED configureren (InfluxDB token)
+
+In Node-RED moet je in de InfluxDB-configuratie het **token** instellen dat overeenkomt met het token uit het `.env`-bestand:
+
+1. Open Node-RED via `http://localhost:1880`.
+2. Dubbelklik op 'Write joystick' of 'Write button events'.
+3. Klik op het potloodje bij 'Server'.
+3. Plak het token uit `.env` in het token-veld.
+4. Deploy de flow opnieuw.
+
+### 5. InfluxDB dashboard importeren
+
+Het InfluxDB dashboard moet handmatig geïmporteerd worden met het bestand `influxdb/sensor_gateway.json`:
+
+1. Ga naar `http://localhost:8086` en log in.
+2. Navigeer naar **Dashboards** → **Import**.
+3. Kies het bestand `influxdb/sensor_gateway.json` uit deze repository.
+
+### 6. Stack opstarten
 
 Start het volledige systeem:
 

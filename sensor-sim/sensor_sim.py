@@ -3,7 +3,6 @@ import json
 import random
 import paho.mqtt.client as mqtt
 
-# BROKER_HOST = "test.mosquitto.org"
 BROKER_HOST = "mqtt"
 BROKER_PORT = 1883
 
