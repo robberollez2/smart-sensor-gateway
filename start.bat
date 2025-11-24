@@ -12,13 +12,3 @@ docker compose down
 
 # Nieuwe stack opstarten
 docker compose up -d
-
-docker compose down
-
-# InfluxDB data leegmaken zodat setup/init opnieuw lopen
-echo "Verwijderen van InfluxDB data..."
-rm -rf ./influxdb/data/
-mkdir -p ./influxdb/data/
-
-# Nieuwe stack opstarten
-docker compose up -d
