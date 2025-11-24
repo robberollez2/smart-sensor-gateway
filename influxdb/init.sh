@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
-echo "Waiting for InfluxDB to be ready..."
+echo "==> Waiting for InfluxDB to be ready..."
+
+# Kleine wachttijd om zeker te zijn dat setup klaar is
 sleep 5
 
-echo "Applying InfluxDB dashboard template (if possible)..."
+echo "==> Importing dashboard from /docker-entrypoint-initdb.d/sensor_gateway.json"
 
 influx apply \
-  -f /docker-entrypoint-initdb.d/sensor_gateway.json \
-  -o "$DOCKER_INFLUXDB_INIT_ORG" \
-  -t "$DOCKER_INFLUXDB_INIT_ADMIN_TOKEN" \
-  --force yes || echo "Template apply failed (misschien al toegepast); ga gewoon verder."
+  --skip-verify \
+  --org "$DOCKER_INFLUXDB_INIT_ORG" \
+  --token "$DOCKER_INFLUXDB_INIT_ADMIN_TOKEN" \
+  --file /docker-entrypoint-initdb.d/sensor_gateway.json
 
-# Heel belangrijk: nooit met error stoppen, anders blijft de container loopen
-exit 0
+echo "==> Dashboard import completed."
