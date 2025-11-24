@@ -45,6 +45,11 @@ Het InfluxDB dashboard moet handmatig geïmporteerd worden met het bestand `infl
 2. Navigeer naar **Dashboards** → **Import**.
 3. Kies het bestand `influxdb/sensor_gateway.json` uit deze repository.
 
+Dashboard instellen:
+1. Klik op 'SET AUTO REFRESH'
+2. Verander het interval naar 1s en klik op Confirm.
+3. Stel het dashboard interval rechtsboven in op 'Past 1m'.
+
 ### 6. Stack opstarten
 
 Start het volledige systeem:
