@@ -85,7 +85,7 @@ Corrupte of reeds bestaande databasebestanden.
 
 ```bash
 docker compose down
-rm -rf influxdb/data/*
+Remove-Item influxdb\\data -Recurse -Force
 docker compose up -d
 ```
 
