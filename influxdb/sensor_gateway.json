@@ -1,1 +1,200 @@
-[{"apiVersion":"influxdata.com/v2alpha1","kind":"Dashboard","metadata":{"name":"ridiculous-ganguly-1cb001"},"spec":{"charts":[{"axes":[{"base":"10","name":"x","scale":"linear"},{"base":"10","name":"y","scale":"linear"}],"colorizeRows":true,"colors":[{"id":"24Asl1jPf0iscGd-aoAnd","name":"Nineteen Eighty Four","type":"scale","hex":"#31C0F6"},{"id":"W5cg47_vvKjYtUvwurWmx","name":"Nineteen Eighty Four","type":"scale","hex":"#A500A5"},{"id":"39xzaYoxlg3lEvIv-Curu","name":"Nineteen Eighty Four","type":"scale","hex":"#FF7E27"}],"geom":"line","height":4,"hoverDimension":"auto","kind":"Xy","legendColorizeRows":true,"legendOpacity":1,"legendOrientationThreshold":100000000,"name":"Button Value Live","opacity":1,"orientationThreshold":100000000,"position":"overlaid","queries":[{"query":"from(bucket: \"sensordata\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)  // gebruikt nu Past 1m\r\n  |> filter(fn: (r) => r._measurement == \"button_events\")\r\n  |> filter(fn: (r) => r._field == \"value\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")"}],"staticLegend":{"colorizeRows":true,"opacity":1,"orientationThreshold":100000000,"widthRatio":1},"width":6,"widthRatio":1,"xCol":"_time","yCol":"_value"},{"colors":[{"id":"base","name":"laser","type":"text","hex":"#00C9FF"}],"decimalPlaces":2,"height":4,"kind":"Single_Stat","name":"Button value Average 1h","queries":[{"query":"from(bucket: \"sensordata\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"button_events\")\r\n  |> filter(fn: (r) => r._field == \"value\")\r\n  |> mean()"}],"staticLegend":{},"width":3,"yPos":4},{"colors":[{"id":"base","name":"laser","type":"text","hex":"#00C9FF"}],"decimalPlaces":2,"height":4,"kind":"Single_Stat","name":"Button value Averga 24h","queries":[{"query":"from(bucket: \"sensordata\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r._measurement == \"button_events\")\n  |> filter(fn: (r) => r._field == \"value\")\n  |> mean()"}],"staticLegend":{},"width":3,"xPos":3,"yPos":4},{"axes":[{"base":"10","name":"x","scale":"linear"},{"base":"10","name":"y","scale":"linear"}],"colorizeRows":true,"colors":[{"id":"24Asl1jPf0iscGd-aoAnd","name":"Nineteen Eighty Four","type":"scale","hex":"#31C0F6"},{"id":"W5cg47_vvKjYtUvwurWmx","name":"Nineteen Eighty Four","type":"scale","hex":"#A500A5"},{"id":"39xzaYoxlg3lEvIv-Curu","name":"Nineteen Eighty Four","type":"scale","hex":"#FF7E27"}],"geom":"line","height":4,"hoverDimension":"auto","kind":"Xy","legendColorizeRows":true,"legendOpacity":1,"legendOrientationThreshold":100000000,"name":"Joystick (x, y) Live","opacity":1,"orientationThreshold":100000000,"position":"overlaid","queries":[{"query":"from(bucket: \"sensordata\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"joystick\")\n  |> filter(fn: (r) => r[\"_field\"] == \"y\" or r[\"_field\"] == \"x\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")"}],"staticLegend":{"colorizeRows":true,"opacity":1,"orientationThreshold":100000000,"widthRatio":1},"width":6,"widthRatio":1,"xCol":"_time","xPos":6,"yCol":"_value"},{"colors":[{"id":"base","name":"white","type":"text","hex":"#ffffff"}],"fieldOptions":[{"displayName":"axis","fieldName":"axis","visible":true},{"displayName":"avg","fieldName":"avg","visible":true}],"height":2,"kind":"Table","name":"Joystick Average X, Y Value 1h","queries":[{"query":"from(bucket: \"sensordata\")\n  |> range(start: -1h)                                   // laatste uur\n  |> filter(fn: (r) => r._measurement == \"joystick\")\n  |> filter(fn: (r) => r._field == \"x\" or r._field == \"y\")\n  |> group(columns: [\"_field\"])                          // eerst per as\n  |> mean()                                              // gemiddelde per as\n  |> group()                                             // ALLE groepen samenvoegen tot 1 table\n  |> keep(columns: [\"_field\", \"_value\"])\n  |> rename(columns: {_field: \"axis\", _value: \"avg\"})"}],"staticLegend":{},"tableOptions":{"verticalTimeAxis":true},"timeFormat":"YYYY-MM-DD HH:mm:ss","width":6,"xPos":6,"yPos":4},{"colors":[{"id":"base","name":"white","type":"text","hex":"#ffffff"}],"fieldOptions":[{"displayName":"axis","fieldName":"axis","visible":true},{"displayName":"avg","fieldName":"avg","visible":true}],"height":2,"kind":"Table","name":"Joystick Averga X, Y Value 24h","queries":[{"query":"from(bucket: \"sensordata\")\n  |> range(start: -24h)                                   // laatste uur\n  |> filter(fn: (r) => r._measurement == \"joystick\")\n  |> filter(fn: (r) => r._field == \"x\" or r._field == \"y\")\n  |> group(columns: [\"_field\"])                          // eerst per as\n  |> mean()                                              // gemiddelde per as\n  |> group()                                             // ALLE groepen samenvoegen tot 1 table\n  |> keep(columns: [\"_field\", \"_value\"])\n  |> rename(columns: {_field: \"axis\", _value: \"avg\"})"}],"staticLegend":{},"tableOptions":{"verticalTimeAxis":true},"timeFormat":"YYYY-MM-DD HH:mm:ss","width":6,"xPos":6,"yPos":6}],"name":"Sensor gateway"}}]
+[
+  {
+    "apiVersion": "influxdata.com/v2alpha1",
+    "kind": "Dashboard",
+    "metadata": { "name": "ridiculous-ganguly-1cb001" },
+    "spec": {
+      "charts": [
+        {
+          "axes": [
+            { "base": "10", "name": "x", "scale": "linear" },
+            { "base": "10", "name": "y", "scale": "linear" }
+          ],
+          "colorizeRows": true,
+          "colors": [
+            {
+              "id": "24Asl1jPf0iscGd-aoAnd",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#31C0F6"
+            },
+            {
+              "id": "W5cg47_vvKjYtUvwurWmx",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#A500A5"
+            },
+            {
+              "id": "39xzaYoxlg3lEvIv-Curu",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#FF7E27"
+            }
+          ],
+          "geom": "line",
+          "height": 4,
+          "hoverDimension": "auto",
+          "kind": "Xy",
+          "legendColorizeRows": true,
+          "legendOpacity": 1,
+          "legendOrientationThreshold": 100000000,
+          "name": "Button Value Live",
+          "opacity": 1,
+          "orientationThreshold": 100000000,
+          "position": "overlaid",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)  // gebruikt nu Past 1m\r\n  |> filter(fn: (r) => r._measurement == \"button_state\")\r\n  |> filter(fn: (r) => r._field == \"value\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")"
+            }
+          ],
+          "staticLegend": {
+            "colorizeRows": true,
+            "opacity": 1,
+            "orientationThreshold": 100000000,
+            "widthRatio": 1
+          },
+          "width": 6,
+          "widthRatio": 1,
+          "xCol": "_time",
+          "yCol": "_value"
+        },
+        {
+          "colors": [
+            { "id": "base", "name": "laser", "type": "text", "hex": "#00C9FF" }
+          ],
+          "decimalPlaces": 2,
+          "height": 4,
+          "kind": "Single_Stat",
+          "name": "Button value Average 1h",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\r\n  |> range(start: -1h)\r\n  |> filter(fn: (r) => r._measurement == \"button_state\")\r\n  |> filter(fn: (r) => r._field == \"value\")\r\n  |> mean()"
+            }
+          ],
+          "staticLegend": {},
+          "width": 3,
+          "yPos": 4
+        },
+        {
+          "colors": [
+            { "id": "base", "name": "laser", "type": "text", "hex": "#00C9FF" }
+          ],
+          "decimalPlaces": 2,
+          "height": 4,
+          "kind": "Single_Stat",
+          "name": "Button value Averga 24h",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r._measurement == \"button_state\")\n  |> filter(fn: (r) => r._field == \"value\")\n  |> mean()"
+            }
+          ],
+          "staticLegend": {},
+          "width": 3,
+          "xPos": 3,
+          "yPos": 4
+        },
+        {
+          "axes": [
+            { "base": "10", "name": "x", "scale": "linear" },
+            { "base": "10", "name": "y", "scale": "linear" }
+          ],
+          "colorizeRows": true,
+          "colors": [
+            {
+              "id": "24Asl1jPf0iscGd-aoAnd",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#31C0F6"
+            },
+            {
+              "id": "W5cg47_vvKjYtUvwurWmx",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#A500A5"
+            },
+            {
+              "id": "39xzaYoxlg3lEvIv-Curu",
+              "name": "Nineteen Eighty Four",
+              "type": "scale",
+              "hex": "#FF7E27"
+            }
+          ],
+          "geom": "line",
+          "height": 4,
+          "hoverDimension": "auto",
+          "kind": "Xy",
+          "legendColorizeRows": true,
+          "legendOpacity": 1,
+          "legendOrientationThreshold": 100000000,
+          "name": "Joystick (x, y) Live",
+          "opacity": 1,
+          "orientationThreshold": 100000000,
+          "position": "overlaid",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"controller/joystick\")\n  |> filter(fn: (r) => r[\"_field\"] == \"y\" or r[\"_field\"] == \"x\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")"
+            }
+          ],
+          "staticLegend": {
+            "colorizeRows": true,
+            "opacity": 1,
+            "orientationThreshold": 100000000,
+            "widthRatio": 1
+          },
+          "width": 6,
+          "widthRatio": 1,
+          "xCol": "_time",
+          "xPos": 6,
+          "yCol": "_value"
+        },
+        {
+          "colors": [
+            { "id": "base", "name": "white", "type": "text", "hex": "#ffffff" }
+          ],
+          "fieldOptions": [
+            { "displayName": "axis", "fieldName": "axis", "visible": true },
+            { "displayName": "avg", "fieldName": "avg", "visible": true }
+          ],
+          "height": 2,
+          "kind": "Table",
+          "name": "Joystick Average X, Y Value 1h",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\n  |> range(start: -1h)                                   // laatste uur\n  |> filter(fn: (r) => r._measurement == \"controller/joystick\")\n  |> filter(fn: (r) => r._field == \"x\" or r._field == \"y\")\n  |> group(columns: [\"_field\"])                          // eerst per as\n  |> mean()                                              // gemiddelde per as\n  |> group()                                             // ALLE groepen samenvoegen tot 1 table\n  |> keep(columns: [\"_field\", \"_value\"])\n  |> rename(columns: {_field: \"axis\", _value: \"avg\"})"
+            }
+          ],
+          "staticLegend": {},
+          "tableOptions": { "verticalTimeAxis": true },
+          "timeFormat": "YYYY-MM-DD HH:mm:ss",
+          "width": 6,
+          "xPos": 6,
+          "yPos": 4
+        },
+        {
+          "colors": [
+            { "id": "base", "name": "white", "type": "text", "hex": "#ffffff" }
+          ],
+          "fieldOptions": [
+            { "displayName": "axis", "fieldName": "axis", "visible": true },
+            { "displayName": "avg", "fieldName": "avg", "visible": true }
+          ],
+          "height": 2,
+          "kind": "Table",
+          "name": "Joystick Averga X, Y Value 24h",
+          "queries": [
+            {
+              "query": "from(bucket: \"sensors\")\n  |> range(start: -24h)                                   // laatste uur\n  |> filter(fn: (r) => r._measurement == \"controller/joystick\")\n  |> filter(fn: (r) => r._field == \"x\" or r._field == \"y\")\n  |> group(columns: [\"_field\"])                          // eerst per as\n  |> mean()                                              // gemiddelde per as\n  |> group()                                             // ALLE groepen samenvoegen tot 1 table\n  |> keep(columns: [\"_field\", \"_value\"])\n  |> rename(columns: {_field: \"axis\", _value: \"avg\"})"
+            }
+          ],
+          "staticLegend": {},
+          "tableOptions": { "verticalTimeAxis": true },
+          "timeFormat": "YYYY-MM-DD HH:mm:ss",
+          "width": 6,
+          "xPos": 6,
+          "yPos": 6
+        }
+      ],
+      "name": "Sensor gateway"
+    }
+  }
+]
